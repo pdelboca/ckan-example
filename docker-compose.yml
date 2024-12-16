@@ -10,7 +10,7 @@
 # but use the provided Make targets to manage things.
 
 services:
-  postgresql_bcie:
+  ckan_postgres:
     container_name: ckan_postgres
     image: ckan/ckan-postgres-dev:2.11
     environment:
@@ -30,7 +30,7 @@ services:
     ports:
       - "8012:5432"
 
-  redis_bcie:
+  ckan_redis:
     container_name: ckan_redis
     image: public.ecr.aws/ubuntu/redis:latest
     ports:
@@ -40,9 +40,9 @@ services:
       - REDIS_ALLOW_REMOTE_CONNECTIONS=yes
       - REDIS_AOF_ENABLED=no
 
-  solr_bcie:
+  ckan_solr:
     container_name: ckan_solr
-    image: ckan/ckan-solr:2.11
+    image: ckan/ckan-solr:2.11-solr9
     ports:
       - "8014:8983"
     volumes:

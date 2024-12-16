@@ -8,7 +8,7 @@ install-ckan: | _check_virtualenv	## Install CKAN and third-party extensions. (F
 	./install-ckan-extensions.sh
 
 up:	## Run all the CKAN services from docker compose (database, Solr and Redis)
-	docker compose -d --no-attach solr_bcie --no-attach redis_bcie
+	docker compose up --no-attach ckan_solr --no-attach ckan_redis -d
 
 down:	## Stop all the CKAN Services (database, Solr and Redis)
 	docker compose down
