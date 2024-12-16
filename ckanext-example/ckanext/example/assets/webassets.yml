@@ -1,0 +1,14 @@
+# example-js:
+#   filter: rjsmin
+#   output: ckanext-example/%(version)s-example.js
+#   contents:
+#     - js/example.js
+#   extra:
+#     preload:
+#       - base/main
+
+# example-css:
+#   filter: cssrewrite
+#   output: ckanext-example/%(version)s-example.css
+#   contents:
+#     - css/example.css
