@@ -1,0 +1,54 @@
+# Docker Compose file for ckanext-bcie
+# ------------------------------------------------
+# The purpose of this docker-compose file is to simplify setting up a
+# development environment for this CKAN extension; It defines Docker based
+# services for all external CKAN dependencies (DB, Solr, Redis) but not for
+# CKAN itself - you should probably run CKAN in a local virtual environment
+# to simplify debugging.
+#
+# Most likely, you do not want to use this file directly with `docker-compose`
+# but use the provided Make targets to manage things.
+
+services:
+  postgresql_bcie:
+    container_name: ckan_postgres
+    image: ckan/ckan-postgres-dev:2.11
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+      CKAN_POSTGRES_DB: "ckan"
+      CKAN_POSTGRES_USER: "ckan_default"
+      CKAN_POSTGRES_USER_PWD: "pass"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "8012:5432"
+
+  redis_bcie:
+    container_name: ckan_redis
+    image: public.ecr.aws/ubuntu/redis:latest
+    ports:
+      - "8013:6379"
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_ALLOW_REMOTE_CONNECTIONS=yes
+      - REDIS_AOF_ENABLED=no
+
+  solr_bcie:
+    container_name: ckan_solr
+    image: ckan/ckan-solr:2.11
+    ports:
+      - "8014:8983"
+    volumes:
+      - solr_data:/var/solr
+
+volumes:
+  ckan_storage:
+  pg_data:
+  solr_data:
