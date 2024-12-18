@@ -21,6 +21,9 @@ down:	## Stop all the CKAN Services (database, Solr and Redis)
 clean:	## Stop all the CKAN Services and remove volumes and docker networks.
 	docker compose down -v
 
+build:  ## Build the main CKAN Dockerfile for deployment
+	docker build .
+
 _check_virtualenv:
 	@if [ -z "$(VIRTUAL_ENV)" ] || [ ! -d ".venv" ]; then \
 	  echo "Virtual environment not activated - create one at .venv folder and activate it."; \

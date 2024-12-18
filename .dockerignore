@@ -1,0 +1,6 @@
+ckan/
+.venv/
+
+*.egg-info
+*.egg/
+*.pyc
