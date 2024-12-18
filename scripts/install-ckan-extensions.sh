@@ -3,6 +3,6 @@
 # If you want to work or debug the extension, clone its repository in a folder 
 # and install it in development mode with `pip install -e`
 
-
-# ckanext-pdfview
-# pip install git+https://github.com/ckan/ckanext-pdfview.git#egg=ckanext-pdfview
+echo "Installing Datapusher+extension"
+pip install -e git+https://github.com/okfn/datapusher-plus.git@okfn_tmp#egg=datapusher_plus
+pip install -r https://raw.githubusercontent.com/okfn/datapusher-plus/okfn_tmp/requirements.txt
