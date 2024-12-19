@@ -9,7 +9,6 @@ COPY scripts/install-locales.sh scripts/install-locales.sh
 RUN scripts/install-locales.sh
 
 COPY patches patches
-COPY ckan.ini ckan.ini
 
 # Create the ckan user
 RUN useradd -m -s /bin/bash ckan
@@ -44,6 +43,8 @@ RUN mkdir /app/storage
 RUN mkdir /app/storage/uploads
 
 EXPOSE 5000
+
+COPY --chown=ckan ckan.ini ckan.ini
 COPY scripts/setup-ckan-ini-file.sh scripts/setup-ckan-ini-file.sh
 COPY entrypoint.sh entrypoint.sh
 ENTRYPOINT [ "/app/entrypoint.sh" ]

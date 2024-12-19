@@ -12,7 +12,9 @@
 services:
   ckan_postgres:
     container_name: ckan_postgres
-    image: ckan/ckan-postgres-dev:2.11
+    build:
+      context: ./docker/psql
+      dockerfile: "Dockerfile"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
