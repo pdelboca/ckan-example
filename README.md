@@ -33,6 +33,7 @@ In a new console, run CKAN:
 python -m venv .venv
 source .venv/bin/activate
 
+make install-os-deps
 make install-ckan
 make install-extensions
 make install-main-extension

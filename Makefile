@@ -3,6 +3,9 @@ default: help
 help:	## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
+install-os-deps:	## Install Debian/Ubuntu packages required for running CKAN and also QSV (for datapusher+)
+	./scripts/install-os-deps.sh
+
 install-ckan: | _check_virtualenv	## Install CKAN (it will clone a local copy into ckan folder and pip install it)
 	./scripts/install-ckan.sh
 
