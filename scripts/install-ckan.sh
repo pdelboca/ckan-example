@@ -4,7 +4,9 @@
 CKAN_INSTALL_TAG=ckan-2.10.5
 
 echo "------ Checking out upstream CKAN code into ckan folder ------"
-git clone -q -b "$CKAN_INSTALL_TAG" "https://github.com/ckan/ckan.git" "ckan"
+if [ ! -d "ckan" ] ; then
+    git clone -q -b "$CKAN_INSTALL_TAG" "https://github.com/ckan/ckan.git" "ckan"
+fi
 cd ckan
 
 echo "------ Applying local patches to upstream CKAN code ------"
