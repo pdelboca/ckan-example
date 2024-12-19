@@ -19,6 +19,4 @@ ckan config-tool /app/ckan.ini "ckanext.datapusher_plus.ssl_verify = ${SSL_VERIF
 ckan config-tool /app/ckan.ini -s logger_ckan "level = ${LOGGER_CKAN_LEVEL}"
 ckan config-tool /app/ckan.ini -s logger_ckanext "level = ${LOGGER_CKANEXT_LEVEL}"
 
-cat /app/ckan.ini
-
 echo "Configuration file setup complete"
