@@ -1,0 +1,96 @@
+# Name of your application. Used to uniquely configure containers.
+service: ckan-example
+
+# Name of the container image.
+image: pdelboca/ckan-example
+
+# Deploy to these servers.
+servers:
+  web:
+    - 192.168.0.1
+
+# Enable SSL auto certification via Let's Encrypt and allow for multiple apps on a single web server.
+proxy:
+  ssl: true
+  host: ckan-example.pdelboca.me
+  app_port: 5000
+
+registry:
+  username: pdelboca
+  password:
+    - KAMAL_REGISTRY_PASSWORD
+
+builder:
+  arch: amd64
+
+# Inject ENV variables into containers (secrets come from .kamal/secrets).
+env:
+  clear:
+    DB_HOST: 192.168.0.2
+    CKAN_DEBUG: false
+    CKAN_SITE_URL: https://ckan-example.pdelboca.me
+    SSL_VERIFY: true
+    LOGGER_CKAN_LEVEL: INFO
+    LOGGER_CKANEXT_LEVEL: INFO
+  secret:
+    - RAILS_MASTER_KEY
+    - SECRET_KEY
+    - BEAKER_SESSION_SECRET
+    - BEAKER_SESSION_VALIDATE_KEY
+    - SQLALCHEMY_URL
+    - DATASTORE_WRITE_URL
+    - DATASTORE_READ_URL
+    - SOLR_URL
+    - CKAN_REDIS_URL
+
+# Use a different ssh user than root
+#
+# ssh:
+#   user: app
+
+# Use a persistent storage volume.
+volumes:
+  - "app_storage:/app/storage"
+
+# Bridge fingerprinted assets, like JS and CSS, between versions to avoid
+# hitting 404 on in-flight requests. Combines all files from new and old
+# version inside the asset_path.
+#
+# asset_path: /app/public/assets
+
+# Use accessory services (secrets come from .kamal/secrets).
+#
+accessories:
+  db:
+    image: postgres:15-alphine
+    host: 192.168.0.2
+    port: "127.0.0.1:5432:5432"
+    env:
+      clear:
+        CKAN_POSTGRES_DB: "ckan"
+        CKAN_POSTGRES_USER: "ckan_default"
+        CKAN_DATASTORE_POSTGRES_DB: "datastore"
+        CKAN_DATASTORE_POSTGRES_WRITE_USER: "datastore_write"
+        CKAN_DATASTORE_POSTGRES_READ_USER: "datastore_read"
+      secret:
+        - POSTGRES_PASSWORD
+        - CKAN_POSTGRES_USER_PWD
+        - CKAN_DATASTORE_POSTGRES_WRITE_USER_PWD
+        - CKAN_DATASTORE_POSTGRES_READ_USER_PWD
+    files:
+      - docker/psql/docker-entrypoint-initdb.d/01_create_users_and_databases.sh:/docker-entrypoint-initdb.d/01_create_users_and_databases.sh
+      - docker/psql/docker-entrypoint-initdb.d/02_datastore_permissions.sh:/docker-entrypoint-initdb.d/02_datastore_permissions.sh
+    directories:
+      - data:/var/lib/postgres/data
+  redis:
+    image: public.ecr.aws/ubuntu/redis:latest
+    host: 192.168.0.2
+    port: "127.0.0.1:6379:6379"
+    directories:
+      - data:/data
+  solr:
+    image: ckan/ckan-solr:2.10-solr9
+    host: 192.168.0.2
+    port: "127.0.0.1:8983:8983"
+    directories:
+      - data:/var/solr
