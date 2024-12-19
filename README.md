@@ -38,6 +38,9 @@ make install-ckan
 make install-extensions
 make install-main-extension
 
+ckan db upgrade
+ckan user add ckan_admin password=testpass email=admin@example.com
+
 ckan run
 ```
 
