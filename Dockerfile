@@ -32,13 +32,18 @@ COPY --chown=ckan ckanext-example/ /app/ckanext-example
 COPY scripts/install-main-extension.sh scripts/install-main-extension.sh
 RUN scripts/install-main-extension.sh
 
+# Copy supervisor files to run the web application and the workers
+COPY files/etc/supervisord.conf /etc/supervisor/supervisord.conf
+COPY files/etc/ckan.conf /etc/supervisor/conf.d/ckan.conf
+COPY files/etc/ckan-worker.conf /etc/supervisor/conf.d/ckan-worker.conf
+
 RUN cp /app/ckan/wsgi.py .
 RUN chmod u+x wsgi.py
 
-# COPY entrypoint.sh .
-# RUN chmod u+x ./entrypoint.sh
 RUN mkdir /app/storage
 RUN mkdir /app/storage/uploads
 
 EXPOSE 5000
-CMD ["ckan", "run"]
+COPY scripts/setup-ckan-ini-file.sh scripts/setup-ckan-ini-file.sh
+COPY entrypoint.sh entrypoint.sh
+ENTRYPOINT [ "/app/entrypoint.sh" ]

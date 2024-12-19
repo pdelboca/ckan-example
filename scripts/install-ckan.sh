@@ -1,7 +1,7 @@
 #!/bin/bash -e
 # Install CKAN from upstream and apply specific patches
 
-CKAN_INSTALL_TAG=ckan-2.11.1
+CKAN_INSTALL_TAG=ckan-2.10.5
 
 echo "------ Checking out upstream CKAN code into ckan folder ------"
 git clone -q -b "$CKAN_INSTALL_TAG" "https://github.com/ckan/ckan.git" "ckan"

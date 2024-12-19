@@ -42,7 +42,7 @@ services:
 
   ckan_solr:
     container_name: ckan_solr
-    image: ckan/ckan-solr:2.11-solr9
+    image: ckan/ckan-solr:2.10-solr9
     ports:
       - "8014:8983"
     volumes:
