@@ -30,7 +30,7 @@ make services
 
 In a new console, run CKAN:
 ```
-python -m venv .venv
+python3.11 -m venv .venv
 source .venv/bin/activate
 
 make install-os-deps
