@@ -1,3 +1,5 @@
 .venv
 ckan/
 storage
+.kamal/secrets
+.kamal/secrets.development
