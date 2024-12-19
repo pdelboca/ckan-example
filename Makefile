@@ -12,8 +12,11 @@ install-extensions: | _check_virtualenv	## Install all third parties extensions 
 install-main-extension: | _check_virtualenv	## Install the main extension (the one hosted in this repository)
 	./scripts/install-main-extension.sh
 
-up:	## Run all the CKAN services from docker compose (database, Solr and Redis)
-	docker compose up --no-attach ckan_solr --no-attach ckan_redis
+services:	## Run all the CKAN services from docker compose (database, Solr and Redis)
+	docker compose up --no-attach ckan_solr --no-attach ckan_redis && \
+
+run:	## Run the CKAN Docker container (Run `make build` first to create the image.)
+	docker run --env-file .kamal/secrets.local --name ckan-example --network host ckan-example:latest
 
 down:	## Stop all the CKAN Services (database, Solr and Redis)
 	docker compose down
@@ -22,7 +25,7 @@ clean:	## Stop all the CKAN Services and remove volumes and docker networks.
 	docker compose down -v
 
 build:  ## Build the main CKAN Dockerfile for deployment
-	docker build .
+	docker build . -t ckan-example:latest
 
 _check_virtualenv:
 	@if [ -z "$(VIRTUAL_ENV)" ] || [ ! -d ".venv" ]; then \
